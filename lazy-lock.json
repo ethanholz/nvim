@@ -26,5 +26,6 @@
   "undotree": { "branch": "master", "commit": "28f2f54a34baff90ea6f4a735ef1813ad875c743" },
   "vim-fugitive": { "branch": "master", "commit": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4" },
   "which-key.nvim": { "branch": "main", "commit": "370ec46f710e058c9c1646273e6b225acf47cbed" },
+  "zen-mode.nvim": { "branch": "main", "commit": "dfcb72a2dfeedc5342b2ee3a68c83243d682ba3c" },
   "zig.vim": { "branch": "master", "commit": "f65ae7a570b71d7a7aa4978ff9ac327e04a36e1e" }
 }

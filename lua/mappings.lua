@@ -13,6 +13,7 @@ end
 map({ "n", "v" }, "<leader>p", '"+p', { desc = "Paste from clipboard" })
 map({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to clipboard" })
 map("t", "<ESC>", "<C-\\><C-n>", { desc = "Exit terminal" })
+map("n", "<leader>zz", "<cmd>ZenMode<CR>", { desc = "Toggle ZendMode" })
 
 -- Register LSP mappings
 vim.api.nvim_create_autocmd("LspAttach", {
