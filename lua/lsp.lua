@@ -4,16 +4,17 @@ vim.o.completeopt = "menuone,noinsert,noselect"
 local servers = {
     -- "bashls",
     "superhtml",
-    "pyright",
+    -- "pyright",
     "nixd",
     "zls",
     "ruff",
     "tflint",
     "just",
-    {
-        "harper_ls",
-        exec = "harper-ls",
-    },
+    "ty",
+    -- {
+    --     "harper_ls",
+    --     exec = "harper-ls",
+    -- },
     {
         "terraformls",
         exec = "terraform-ls",
