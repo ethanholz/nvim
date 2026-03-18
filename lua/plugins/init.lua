@@ -38,12 +38,6 @@ return {
             },
         },
     },
-    -- Treesitter
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-    },
-    "nvim-treesitter/nvim-treesitter-context",
     -- UI
     {
         "EdenEast/nightfox.nvim",
