@@ -21,10 +21,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
         map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
         map("n", "<leader>R", vim.lsp.buf.rename, { desc = "Rename" })
-        map("n", "<leader>fl", require("telescope.builtin").lsp_document_symbols, { desc = "LSP Document Symbols" })
         map("n", "gd", vim.lsp.buf.definition, { desc = "Goto Definition" })
-        map("n", "<leader>gr", require("telescope.builtin").lsp_references, { desc = "References" })
-        map("n", "<leader>gi", require("telescope.builtin").lsp_implementations, { desc = "Implementations" })
         map("n", "K", vim.lsp.buf.hover, { desc = "Hover (LSP)" })
     end,
 })
