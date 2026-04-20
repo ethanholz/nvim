@@ -37,7 +37,6 @@ vim.opt.filetype = "on"
 vim.o.swapfile = false
 vim.o.wrap = false
 vim.o.clipboard = "unnamedplus"
-require("vim._core.ui2").enable()
 
 -- Persistent undos
 vim.opt.undofile = true
