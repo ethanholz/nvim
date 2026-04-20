@@ -4,6 +4,11 @@ return {
         opts = {
             input = {},
             picker = {},
+            indent = {
+                animate = {
+                    enabled = false,
+                },
+            },
         },
         keys = {
             {
