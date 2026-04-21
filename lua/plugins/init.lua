@@ -50,7 +50,6 @@ return {
         "ethanholz/nvim-lastplace",
         config = true,
     },
-    "mbbill/undotree",
     {
         "folke/which-key.nvim",
         config = true,
