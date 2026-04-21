@@ -9,6 +9,7 @@ return {
                     enabled = false,
                 },
             },
+            explorer = {},
         },
         keys = {
             {
@@ -45,6 +46,13 @@ return {
                     Snacks.picker.lsp_implementations()
                 end,
                 desc = "Implementations",
+            },
+            {
+                "<leader>e",
+                function()
+                    Snacks.explorer.open()
+                end,
+                desc = "File Explorer",
             },
         },
     },
