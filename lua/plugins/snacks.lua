@@ -3,13 +3,23 @@ return {
         "folke/snacks.nvim",
         opts = {
             input = {},
-            picker = {},
+            picker = {
+                sources = {
+                    files = {
+                        exclude = { "*.lock" },
+                    },
+                    grep = {
+                        exclude = { "*.lock" },
+                    },
+                },
+            },
             indent = {
                 animate = {
                     enabled = false,
                 },
             },
             explorer = {},
+            notifier = {},
         },
         keys = {
             {
@@ -25,6 +35,13 @@ return {
                     Snacks.picker.grep()
                 end,
                 desc = "Grep",
+            },
+            {
+                "<leader>fb",
+                function()
+                    Snacks.picker.buffers()
+                end,
+                desc = "Buffers",
             },
             {
                 "<leader>s",

@@ -2,7 +2,7 @@ return {
     {
         "nvim-lualine/lualine.nvim",
         config = function()
-            vim.opt.cmdheight = 0
+            vim.opt.cmdheight = 1
             vim.opt.laststatus = 3
             require("lualine").setup({
                 options = {
