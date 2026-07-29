@@ -1,16 +1,9 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "--single-branch",
-        "https://github.com/folke/lazy.nvim.git",
-        lazypath,
-    })
-end
 vim.g.mapleader = ","
-vim.opt.runtimepath:prepend(lazypath)
+
+local github = function(repo)
+    return "https://github.com/" .. repo
+end
+
 vim.opt.winborder = "rounded"
 vim.opt.relativenumber = true
 vim.opt.number = true
@@ -41,7 +34,143 @@ vim.o.clipboard = "unnamedplus"
 -- Persistent undos
 vim.opt.undofile = true
 vim.filetype.add({ extension = { mdx = "mdx", service = "systemd", templ = "templ" } })
-require("lazy").setup("plugins")
+vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
+
+vim.pack.add({
+    github("neovim/nvim-lspconfig"),
+    { src = github("mrcjkb/rustaceanvim"), version = vim.version.range("^9") },
+    github("nvim-lua/plenary.nvim"),
+    github("Saecki/crates.nvim"),
+    github("ziglang/zig.vim"),
+    { src = github("saghen/blink.cmp"), version = vim.version.range("1.*") },
+    github("EdenEast/nightfox.nvim"),
+    github("ethanholz/nvim-lastplace"),
+    github("folke/which-key.nvim"),
+    github("folke/snacks.nvim"),
+    github("echasnovski/mini.icons"),
+    github("folke/lsp-trouble.nvim"),
+    github("stevearc/conform.nvim"),
+    github("nvim-lualine/lualine.nvim"),
+    github("nvim-treesitter/nvim-treesitter"),
+    github("nvim-treesitter/nvim-treesitter-context"),
+}, { confirm = false, load = true })
+
+local nts = require("nvim-treesitter")
+local ts_parsers = {
+    "astro",
+    "bash",
+    "c",
+    "dockerfile",
+    "gitcommit",
+    "go",
+    "gomod",
+    "lua",
+    "python",
+    "query",
+    "rust",
+    "toml",
+    "yaml",
+    "just",
+}
+nts.setup({
+    install_dir = vim.fn.stdpath("data") .. "/site",
+})
+nts.install(ts_parsers)
+vim.api.nvim_create_autocmd("PackChanged", {
+    callback = function(event)
+        if
+            event.data.spec.name == "nvim-treesitter"
+            and (event.data.kind == "install" or event.data.kind == "update")
+        then
+            nts.update()
+        end
+    end,
+})
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = ts_parsers,
+    callback = function()
+        pcall(vim.treesitter.start)
+    end,
+})
+
+require("snacks").setup({
+    input = {},
+    picker = {
+        sources = {
+            files = {
+                exclude = { "*.lock" },
+            },
+            grep = {
+                exclude = { "*.lock" },
+            },
+        },
+    },
+    indent = {
+        animate = {
+            enabled = false,
+        },
+    },
+    explorer = {},
+    notifier = {},
+})
+
+require("mini.icons").setup()
+require("trouble").setup()
+
+require("blink.cmp").setup({
+    completion = {
+        documentation = {
+            auto_show = true,
+            auto_show_delay_ms = 500,
+        },
+    },
+    keymap = {
+        preset = "default",
+        ["<C-j>"] = { "select_next", "fallback" },
+        ["<C-k>"] = { "select_prev", "fallback" },
+    },
+})
+require("crates").setup({
+    lsp = {
+        enabled = true,
+        actions = true,
+        completion = true,
+        hover = true,
+    },
+})
+require("nvim-lastplace").setup()
+require("which-key").setup()
+vim.opt.cmdheight = 1
+vim.opt.laststatus = 3
+require("lualine").setup({
+    options = {
+        component_separators = { left = "|", right = "|" },
+        section_separators = "",
+    },
+})
+vim.cmd.colorscheme("carbonfox")
+
+local conform_folder = "/Users/ethan/Documents/work/openfe/openfe"
+local cwd = vim.fs.normalize(vim.loop.cwd() or "")
+conform_folder = vim.fs.normalize(conform_folder)
+if cwd:sub(1, #conform_folder) ~= conform_folder then
+    require("conform").setup({
+        formatters_by_ft = {
+            lua = { "stylua" },
+            python = { "ruff_format" },
+            terraform = { "tofu_fmt" },
+            astro = { "prettierd", "prettier", stop_after_first = true },
+            svelte = { "prettierd", "prettier", stop_after_first = true },
+            typescript = { "prettierd", "prettier", stop_after_first = true },
+            javascript = { "prettierd", "prettier", stop_after_first = true },
+        },
+        format_on_save = {
+            timeout_ms = 500,
+            lsp_fallback = true,
+        },
+    })
+end
+
 require("mappings")
 require("lsp")
 
