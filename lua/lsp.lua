@@ -11,6 +11,7 @@ local servers = {
     "tflint",
     "just",
     "ty",
+    "templ",
     -- {
     --     "harper_ls",
     --     exec = "harper-ls",

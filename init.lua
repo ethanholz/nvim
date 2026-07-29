@@ -40,11 +40,11 @@ vim.o.clipboard = "unnamedplus"
 
 -- Persistent undos
 vim.opt.undofile = true
+vim.filetype.add({ extension = { mdx = "mdx", service = "systemd", templ = "templ" } })
 require("lazy").setup("plugins")
 require("mappings")
 require("lsp")
 
-vim.filetype.add({ extension = { mdx = "mdx", service = "systemd" } })
 vim.treesitter.language.register("markdown", "mdx")
 vim.treesitter.language.register("html", "superhtml")
 
