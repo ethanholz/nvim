@@ -12,10 +12,10 @@ local servers = {
     "just",
     "ty",
     "templ",
-    -- {
-    --     "harper_ls",
-    --     exec = "harper-ls",
-    -- },
+    {
+        "harper_ls",
+        exec = "harper-ls",
+    },
     {
         "terraformls",
         exec = "terraform-ls",
