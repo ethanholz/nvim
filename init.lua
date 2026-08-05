@@ -42,7 +42,6 @@ vim.pack.add({
     github("nvim-lua/plenary.nvim"),
     github("Saecki/crates.nvim"),
     github("ziglang/zig.vim"),
-    { src = github("saghen/blink.cmp"), version = vim.version.range("1.*") },
     github("EdenEast/nightfox.nvim"),
     github("ethanholz/nvim-lastplace"),
     github("folke/which-key.nvim"),
@@ -98,10 +97,12 @@ require("snacks").setup({
     picker = {
         sources = {
             files = {
-                exclude = { "*.lock" },
+                hidden = true,
+                exclude = { "*.lock", ".env*" },
             },
             grep = {
-                exclude = { "*.lock" },
+                hidden = true,
+                exclude = { "*.lock", ".env*" },
             },
         },
     },
@@ -117,19 +118,6 @@ require("snacks").setup({
 require("mini.icons").setup()
 require("trouble").setup()
 
-require("blink.cmp").setup({
-    completion = {
-        documentation = {
-            auto_show = true,
-            auto_show_delay_ms = 500,
-        },
-    },
-    keymap = {
-        preset = "default",
-        ["<C-j>"] = { "select_next", "fallback" },
-        ["<C-k>"] = { "select_prev", "fallback" },
-    },
-})
 require("crates").setup({
     lsp = {
         enabled = true,
@@ -172,7 +160,18 @@ if cwd:sub(1, #conform_folder) ~= conform_folder then
 end
 
 require("mappings")
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(ev)
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client ~= nil and client:supports_method("textDocument/completion") then
+            vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+        end
+    end,
+})
+
 require("lsp")
+vim.cmd("set completeopt+=noselect")
+vim.lsp.enable({ "lua_ls", "gh_actions_ls", "gopls" })
 
 vim.treesitter.language.register("markdown", "mdx")
 vim.treesitter.language.register("html", "superhtml")
@@ -184,14 +183,13 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     pattern = { "gitcommit", "markdown", "txt" },
     desc = "Enable spell checking and text wrapping for certain filetypes",
     callback = function()
-        -- vim.opt_local.wrap = true
         vim.opt_local.spell = true
     end,
 })
 vim.opt.spell = false
 
 vim.diagnostic.config({
-    update_in_insert = false,
-    -- virtual_text = { current_line = true },
+    -- update_in_insert = false,
+    virtual_text = true,
     virtual_lines = { current_line = true },
 })

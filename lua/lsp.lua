@@ -1,9 +1,5 @@
-vim.o.completeopt = "menuone,noinsert,noselect"
--- local lspkind = require("lspkind")
 -- A table of servers used for setting up LSP
 local servers = {
-    -- "bashls",
-    "superhtml",
     -- "pyright",
     "nixd",
     "zls",
@@ -12,10 +8,6 @@ local servers = {
     "just",
     "ty",
     "templ",
-    {
-        "harper_ls",
-        exec = "harper-ls",
-    },
     {
         "terraformls",
         exec = "terraform-ls",
@@ -28,10 +20,6 @@ local servers = {
         "nil_ls",
         exec = "nil",
     },
-    -- {
-    --     "ltex",
-    --     exec = "ltex-ls",
-    -- },
     {
         "ts_ls",
         exec = "typescript-language-server",
@@ -40,15 +28,7 @@ local servers = {
         "astro",
         exec = "astro-ls",
     },
-    {
-        "lua_ls",
-        exec = "lua-language-server",
-    },
     "gopls",
-    {
-        "gh_actions_ls",
-        exec = "gh-actions-language-server",
-    },
     {
         "yamlls",
         exec = "yaml-language-server",
@@ -84,8 +64,6 @@ for _, server in ipairs(servers) do
     end
     ::continue::
 end
-
-vim.lsp.enable("biome-custom")
 
 vim.g.rustaceanvim = {
     server = {

@@ -1,17 +1,33 @@
+local root_markers1 = {
+    ".emmyrc.json",
+    ".luarc.json",
+    ".luarc.jsonc",
+}
+local root_markers2 = {
+    ".luacheckrc",
+    ".stylua.toml",
+    "stylua.toml",
+    "selene.toml",
+    "selene.yml",
+}
+
+---@type vim.lsp.Config
 return {
+    cmd = { "lua-language-server" },
+    filetypes = { "lua" },
+    root_markers = vim.fn.has("nvim-0.11.3") == 1 and { root_markers1, root_markers2, { ".git" } }
+        or vim.list_extend(vim.list_extend(root_markers1, root_markers2), { ".git" }),
+    ---@type lspconfig.settings.lua_ls
     settings = {
         Lua = {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                version = "LuaJIT",
-            },
+            codeLens = { enable = true },
             diagnostics = {
                 -- Get the language server to recognize the `vim` global and `awesome`
                 globals = { "vim", "use", "beautiful", "awful" },
             },
             workspace = {
                 -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true),
+                library = { vim.env.VIMRUNTIME },
                 checkThirdParty = false,
             },
             hint = {
