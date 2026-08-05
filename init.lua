@@ -177,6 +177,7 @@ vim.lsp.enable({
     "nil_ls",
     "ts_ls",
     "yamlls",
+    "harper_ls",
 })
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
