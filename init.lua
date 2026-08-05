@@ -161,7 +161,20 @@ end
 require("mappings")
 require("lsp")
 vim.cmd("set completeopt+=noselect")
-vim.lsp.enable({ "lua_ls", "gh_actions_ls", "gopls", "astro", "nixd", "zls", "ruff", "tflint", "just", "ty", "templ" })
+vim.lsp.enable({
+    "lua_ls",
+    "gh_actions_ls",
+    "gopls",
+    "astro",
+    "nixd",
+    "zls",
+    "ruff",
+    "tflint",
+    "just",
+    "ty",
+    "templ",
+    "terraformls",
+})
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
