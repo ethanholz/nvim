@@ -176,6 +176,7 @@ vim.lsp.enable({
     "terraformls",
     "nil_ls",
     "ts_ls",
+    "yamlls",
 })
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
