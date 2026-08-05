@@ -167,7 +167,6 @@ if cwd:sub(1, #conform_folder) ~= conform_folder then
 end
 
 require("mappings")
-require("lsp")
 vim.cmd("set completeopt+=noselect")
 vim.lsp.enable({
     "lua_ls",
@@ -187,11 +186,49 @@ vim.lsp.enable({
     "yamlls",
     "harper_ls",
 })
+vim.g.rustaceanvim = {
+    server = {
+        on_attach = function(client, _)
+            client.server_capabilities.workspace.didChangeWatchedFiles = {
+                dynamicRegistration = false,
+            }
+        end,
+        default_settings = {
+            ["rust-analyzer"] = {
+                files = {
+                    watcherExclude = {
+                        "**/.direnv/**",
+                    },
+                    excludeDirs = {
+                        ".direnv",
+                        ".github",
+                    },
+                },
+                cargo = {
+                    features = "all",
+                },
+            },
+        },
+    },
+}
+
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
         if client ~= nil and client:supports_method("textDocument/completion") then
             vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+        end
+    end,
+})
+
+vim.api.nvim_create_augroup("LspAttach_inlayhints", {})
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = "LspAttach_inlayhints",
+    callback = function(event)
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+        -- Enable for all clients except for lua_ls
+        if client and client.name ~= "lua_ls" then
+            vim.lsp.inlay_hint.enable(true)
         end
     end,
 })
