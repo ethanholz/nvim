@@ -13,10 +13,6 @@ local servers = {
         exec = "terraform-ls",
     },
     {
-        "eslint",
-        exec = "vscode-eslint-language-server",
-    },
-    {
         "nil_ls",
         exec = "nil",
     },
@@ -28,7 +24,6 @@ local servers = {
         "astro",
         exec = "astro-ls",
     },
-    "gopls",
     {
         "yamlls",
         exec = "yaml-language-server",

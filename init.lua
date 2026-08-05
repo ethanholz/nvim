@@ -1,9 +1,8 @@
-vim.g.mapleader = ","
-
 local github = function(repo)
     return "https://github.com/" .. repo
 end
 
+vim.g.mapleader = ","
 vim.opt.winborder = "rounded"
 vim.opt.relativenumber = true
 vim.opt.number = true
@@ -30,10 +29,12 @@ vim.opt.filetype = "on"
 vim.o.swapfile = false
 vim.o.wrap = false
 vim.o.clipboard = "unnamedplus"
+vim.opt.cmdheight = 1
+vim.opt.laststatus = 3
 
 -- Persistent undos
 vim.opt.undofile = true
-vim.filetype.add({ extension = { mdx = "mdx", service = "systemd", templ = "templ" } })
+vim.filetype.add({ extension = { service = "systemd", templ = "templ" } })
 vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 
 vim.pack.add({
@@ -128,8 +129,6 @@ require("crates").setup({
 })
 require("nvim-lastplace").setup()
 require("which-key").setup()
-vim.opt.cmdheight = 1
-vim.opt.laststatus = 3
 require("lualine").setup({
     options = {
         component_separators = { left = "|", right = "|" },
@@ -160,6 +159,9 @@ if cwd:sub(1, #conform_folder) ~= conform_folder then
 end
 
 require("mappings")
+require("lsp")
+vim.cmd("set completeopt+=noselect")
+vim.lsp.enable({ "lua_ls", "gh_actions_ls", "gopls", "astro" })
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
@@ -168,13 +170,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
     end,
 })
-
-require("lsp")
-vim.cmd("set completeopt+=noselect")
-vim.lsp.enable({ "lua_ls", "gh_actions_ls", "gopls" })
-
-vim.treesitter.language.register("markdown", "mdx")
-vim.treesitter.language.register("html", "superhtml")
 
 require("treesitter-context").setup()
 
