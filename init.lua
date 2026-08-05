@@ -38,7 +38,6 @@ vim.filetype.add({ extension = { service = "systemd", templ = "templ" } })
 vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 
 vim.pack.add({
-    github("neovim/nvim-lspconfig"),
     { src = github("mrcjkb/rustaceanvim"), version = vim.version.range("^9") },
     github("nvim-lua/plenary.nvim"),
     github("Saecki/crates.nvim"),
@@ -72,10 +71,13 @@ local ts_parsers = {
     "yaml",
     "just",
 }
-nts.setup({
-    install_dir = vim.fn.stdpath("data") .. "/site",
-})
-nts.install(ts_parsers)
+local installed_parsers = nts.get_installed("parsers")
+local missing_parsers = vim.tbl_filter(function(parser)
+    return not vim.list_contains(installed_parsers, parser)
+end, ts_parsers)
+if #missing_parsers > 0 then
+    nts.install(missing_parsers)
+end
 vim.api.nvim_create_autocmd("PackChanged", {
     callback = function(event)
         if
@@ -119,13 +121,19 @@ require("snacks").setup({
 require("mini.icons").setup()
 require("trouble").setup()
 
-require("crates").setup({
-    lsp = {
-        enabled = true,
-        actions = true,
-        completion = true,
-        hover = true,
-    },
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+    pattern = "Cargo.toml",
+    once = true,
+    callback = function()
+        require("crates").setup({
+            lsp = {
+                enabled = true,
+                actions = true,
+                completion = true,
+                hover = true,
+            },
+        })
+    end,
 })
 require("nvim-lastplace").setup()
 require("which-key").setup()
@@ -187,8 +195,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
     end,
 })
-
-require("treesitter-context").setup()
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
     group = vim.api.nvim_create_augroup("edit_text", { clear = true }),
