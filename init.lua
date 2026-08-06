@@ -34,7 +34,13 @@ vim.opt.laststatus = 3
 
 -- Persistent undos
 vim.opt.undofile = true
-vim.filetype.add({ extension = { service = "systemd", templ = "templ" } })
+vim.filetype.add({
+    extension = { service = "systemd", templ = "templ" },
+    pattern = {
+        [".*/%.github/workflows/.*.yml"] = "yaml.github",
+        [".*/%.github/workflows/.*.yaml"] = "yaml.github",
+    },
+})
 vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 
 vim.pack.add({
