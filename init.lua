@@ -45,7 +45,6 @@ vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 
 vim.pack.add({
     { src = github("mrcjkb/rustaceanvim"), version = vim.version.range("^9") },
-    github("nvim-lua/plenary.nvim"),
     github("Saecki/crates.nvim"),
     github("ziglang/zig.vim"),
     github("EdenEast/nightfox.nvim"),
