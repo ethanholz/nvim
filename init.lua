@@ -199,6 +199,7 @@ vim.lsp.enable({
     "terraformls",
     "nil_ls",
     "ts_ls",
+    "tombi",
     "yamlls",
     "harper_ls",
 })
